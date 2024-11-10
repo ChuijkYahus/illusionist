@@ -1,0 +1,1 @@
+- Initial project creation, moving code from https://github.com/enjarai/trickster. (@StellarWitch7)

@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "illusionist",
+	"version": "${version}",
+	"name": "Illusionist",
+	"description": "Re-adds the shadow blocks from Trickster versions prior to 2.0.0-alpha.40",
+	"authors": [
+		"StellarWitch7",
+        "enjarai"
+	],
+	"contact": {
+		"homepage": "https://github.com/StellarWitch7/illusionist",
+		"sources": "https://github.com/StellarWitch7/illusionist",
+        "issues": "https://github.com/StellarWitch7/illusionist/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/illusionist/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"stellarwitch7.illusionist.Illusionist"
+		],
+		"client": [
+			"stellarwitch7.illusionist.IllusionistClient"
+		],
+		"cardinal-components-chunk": [
+			"stellarwitch7.illusionist.cca.ModChunkComponents"
+		]
+	},
+	"custom": {
+		"cardinal-components": [
+			"illusionist:shadow_disguise_map"
+		]
+	},
+	"mixins": [
+		"illusionist.mixins.json",
+		{
+			"config": "illusionist.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": ">=1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+        "trickster": ">=2.0.0-alpha.40"
+	},
+	"breaks": {
+		"optifabric": "*",
+        "sodium": "*"
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "stellarwitch7.illusionist.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+        "AbstractBlockStateMixin",
+        "WorldChunkMixin",
+        "LivingEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "stellarwitch7.illusionist.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"RenderedChunkMixin",
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
