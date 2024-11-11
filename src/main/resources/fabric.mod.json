@@ -3,7 +3,7 @@
 	"id": "illusionist",
 	"version": "${version}",
 	"name": "Illusionist",
-	"description": "Re-adds the shadow blocks from Trickster versions prior to 2.0.0-alpha.40",
+	"description": "A small add-on for Trickster which re-adds the shadow blocks present in the 2.0.0-alpha.* versions",
 	"authors": [
 		"StellarWitch7",
         "enjarai"
