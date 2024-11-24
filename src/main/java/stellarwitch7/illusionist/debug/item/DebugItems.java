@@ -1,7 +1,6 @@
 package stellarwitch7.illusionist.debug.item;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -23,8 +22,6 @@ public class DebugItems {
         // Register the item in the Trickster item group
         ItemGroupEvents.modifyEntriesEvent(
                 RegistryKey.of(RegistryKeys.ITEM_GROUP, Trickster.id("trickster"))
-        ).register((entries) -> {
-            entries.add(DebugItems.SODIUM_DEATH_STICK);
-        });
+        ).register((entries) -> entries.add(DebugItems.SODIUM_DEATH_STICK));
     }
 }

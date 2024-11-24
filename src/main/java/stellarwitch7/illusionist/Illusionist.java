@@ -5,7 +5,6 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import stellarwitch7.illusionist.debug.DebugHelper;
-import stellarwitch7.illusionist.debug.item.SodiumDeathStick;
 import stellarwitch7.illusionist.spell.trick.ModTricks;
 
 

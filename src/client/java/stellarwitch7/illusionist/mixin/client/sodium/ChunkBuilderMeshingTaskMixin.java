@@ -11,10 +11,7 @@ import net.caffeinemc.mods.sodium.client.world.cloned.ChunkRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3dc;
-import org.spongepowered.asm.mixin.Debug;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import stellarwitch7.illusionist.accessor.ClonedChunkSectionAccessor;
 
@@ -50,10 +47,7 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
         return state;
     }
 
-    private static int encodePos(BlockPos pos) {
-        return encodePos(pos.getX(), pos.getY(), pos.getZ());
-    }
-
+    @Unique
     private static int encodePos(int x, int y, int z) {
         var xe = x & 15;
         var ze = (z & 15) << 4;
