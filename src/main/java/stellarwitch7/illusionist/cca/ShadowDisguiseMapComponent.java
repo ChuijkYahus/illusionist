@@ -21,7 +21,6 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         Endec.INT,
         MinecraftEndecs.ofRegistry(Registries.BLOCK)
     ).xmap(Int2ObjectOpenHashMap::new, map -> map).keyed("disguises", Int2ObjectOpenHashMap::new);
-
     private volatile Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>(0);
     private final Chunk chunk;
 
@@ -99,5 +98,10 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         var ze = (z & 15) << 4;
         var ye = y << 8;
         return ye | ze | xe;
+    }
+    public Int2ObjectOpenHashMap<Block> toUpdateMap() {
+        Int2ObjectOpenHashMap<Block> copy = new Int2ObjectOpenHashMap<>(disguises.size());
+        copy.putAll(disguises);
+        return copy;
     }
 }
