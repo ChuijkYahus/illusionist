@@ -22,6 +22,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         MinecraftEndecs.ofRegistry(Registries.BLOCK)
     ).xmap(Int2ObjectOpenHashMap::new, map -> map).keyed("disguises", Int2ObjectOpenHashMap::new);
     private volatile Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>(0);
+    private volatile Int2ObjectOpenHashMap<Block> disguisesCache = null;
     private final Chunk chunk;
 
     public ShadowDisguiseMapComponent(Chunk chunk) {
@@ -36,6 +37,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         disguises = tag.get(DISGUISES);
+        disguisesCache = null;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
         disguises = buf.read(DISGUISES.endec());
+        disguisesCache = null;
     }
 
     /**
@@ -71,6 +74,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
 
     public boolean setFunnyState(BlockPos pos, Block block) {
         if (disguises.put(encodePos(pos), block) != block) {
+            disguisesCache = null;
             chunk.setNeedsSaving(true);
             ModChunkComponents.SHADOW_DISGUISE_MAP.sync(chunk);
             return true;
@@ -82,6 +86,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     public boolean clearFunnyState(BlockPos pos) {
         if (disguises.remove(encodePos(pos)) != null) {
             chunk.setNeedsSaving(true);
+            disguisesCache = null;
             ModChunkComponents.SHADOW_DISGUISE_MAP.sync(chunk);
             return true;
         }
@@ -89,19 +94,21 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         return false;
     }
 
-    public int encodePos(BlockPos pos) {
+    public static int encodePos(BlockPos pos) {
         return encodePos(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public int encodePos(int x, int y, int z) {
+    public static int encodePos(int x, int y, int z) {
         var xe = x & 15;
         var ze = (z & 15) << 4;
         var ye = y << 8;
         return ye | ze | xe;
     }
     public Int2ObjectOpenHashMap<Block> toUpdateMap() {
-        Int2ObjectOpenHashMap<Block> copy = new Int2ObjectOpenHashMap<>(disguises.size());
-        copy.putAll(disguises);
-        return copy;
+        if (this.disguisesCache != null)
+            return disguisesCache;
+        this.disguisesCache = new Int2ObjectOpenHashMap<>(disguises.size());
+        this.disguisesCache.putAll(disguises);
+        return this.disguisesCache;
     }
 }

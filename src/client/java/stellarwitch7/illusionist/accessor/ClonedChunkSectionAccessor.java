@@ -10,5 +10,5 @@ public interface ClonedChunkSectionAccessor {
      * Gets the shadow block states for this chunk section.
      * @return the shadow block states for this chunk section
      */
-    AtomicReference<Int2ObjectOpenHashMap<Block>> illusionist$getBlockStates();
+    Int2ObjectOpenHashMap<Block> illusionist$getBlockStates();
 }

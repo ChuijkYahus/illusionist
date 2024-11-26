@@ -25,7 +25,7 @@ public class ClonedChunkSectionMixin implements ClonedChunkSectionAccessor {
      * stored as an atomic reference to allow for safe access in a {@link ChunkBuilderMeshingTask}
      */
     @Unique
-    private final AtomicReference<Int2ObjectOpenHashMap<Block>> blockStates = new AtomicReference<>();
+    private volatile Int2ObjectOpenHashMap<Block> blockStates = null;
 
     /**
      * Stores a copy of a chunks shadow disguise map with this section, to safely access it later in a {@link ChunkBuilderMeshingTask }
@@ -37,7 +37,7 @@ public class ClonedChunkSectionMixin implements ClonedChunkSectionAccessor {
      */
     @Inject(method = "<init>", at = @At("TAIL"))
     private void appendShadowDisguiseMap(World level, WorldChunk chunk, ChunkSection section, ChunkSectionPos pos, CallbackInfo ci) {
-        blockStates.set(ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk).toUpdateMap());
+        this.blockStates = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk).toUpdateMap();
     }
 
     /**
@@ -45,7 +45,7 @@ public class ClonedChunkSectionMixin implements ClonedChunkSectionAccessor {
      * @return the shadow block states for this chunk section
      */
     @Override
-    public AtomicReference<Int2ObjectOpenHashMap<Block>> illusionist$getBlockStates() {
+    public Int2ObjectOpenHashMap<Block> illusionist$getBlockStates() {
         return blockStates;
     }
 }

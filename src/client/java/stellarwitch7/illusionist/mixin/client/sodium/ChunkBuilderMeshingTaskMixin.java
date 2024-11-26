@@ -9,11 +9,11 @@ import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilder
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.caffeinemc.mods.sodium.client.world.cloned.ChunkRenderContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3dc;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import stellarwitch7.illusionist.accessor.ClonedChunkSectionAccessor;
+import stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent;
 
 @Debug(export = true)
 @Mixin(ChunkBuilderMeshingTask.class)
@@ -41,17 +41,9 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
         @SuppressWarnings("DataFlowIssue")
         int relBlockZ = z - ((LevelSliceAccessor)(Object)instance).getOriginBlockZ();
         var map = ((ClonedChunkSectionAccessor) this.renderContext.getSections()[LevelSliceAccessor.invokeGetLocalSectionIndex(relBlockX >> 4, relBlockY >> 4, relBlockZ >> 4)]).illusionist$getBlockStates();
-        if (map.get().containsKey(encodePos(x, y, z))) {
-            state = map.get().get(encodePos(x, y, z)).getDefaultState();
+        if (map.containsKey(ShadowDisguiseMapComponent.encodePos(x, y, z))) {
+            state = map.get(ShadowDisguiseMapComponent.encodePos(x, y, z)).getDefaultState();
         }
         return state;
-    }
-
-    @Unique
-    private static int encodePos(int x, int y, int z) {
-        var xe = x & 15;
-        var ze = (z & 15) << 4;
-        var ye = y << 8;
-        return ye | ze | xe;
     }
 }

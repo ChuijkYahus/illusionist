@@ -27,7 +27,7 @@ public abstract class WorldChunkMixin {
 
     @Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/block/BlockState;", at = @At("HEAD"))
     private void dispelShadowBlock(BlockPos pos, BlockState newState, boolean moved, CallbackInfoReturnable<BlockState> cir) {
-        if (world.isClient) return;
+        if (world.isClient()) return;
 
         if (newState != world.getBlockState(pos)) {
             var serverWorld = world.getServer().getWorld(world.getRegistryKey());
