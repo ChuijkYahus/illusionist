@@ -2,11 +2,3 @@ trickster:
   trick.illusionist:
     disguise_block: Shadow Ploy
     dispel_block_disguise: Revelation Ploy
-illusionist:
-  debug:
-    message:
-        clear_state: Cleared funny state
-        set_state: Set funny state
-item:
-  illusionist:
-    sodium_death_stick: State Switcher

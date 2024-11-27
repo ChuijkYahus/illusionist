@@ -70,7 +70,7 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
 
     modCompileOnly "maven.modrinth:sodium:${property("deps.sodium")}"
-    modLocalRuntime "maven.modrinth:sodium:${property("deps.sodium")}"
+//    modLocalRuntime "maven.modrinth:sodium:${property("deps.sodium")}"
 }
 
 processResources {

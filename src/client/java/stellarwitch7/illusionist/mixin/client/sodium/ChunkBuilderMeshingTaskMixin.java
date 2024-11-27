@@ -10,10 +10,15 @@ import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.caffeinemc.mods.sodium.client.world.cloned.ChunkRenderContext;
 import net.minecraft.block.BlockState;
 import org.joml.Vector3dc;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Debug;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import stellarwitch7.illusionist.accessor.ClonedChunkSectionAccessor;
-import stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent;
+import stellarwitch7.illusionist.accessor.LevelSliceExt;
+
+import static stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent.encodePos;
 
 @Debug(export = true)
 @Mixin(ChunkBuilderMeshingTask.class)
@@ -26,23 +31,17 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
         super(render, time, absoluteCameraPos);
     }
 
-    @WrapOperation(
-            method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"
-            )
-    )
+    @WrapOperation(method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"))
     private BlockState wrapGetBlockState(LevelSlice instance, int x, int y, int z, Operation<BlockState> original) {
         BlockState state = original.call(instance, x, y, z);
-        int relBlockX = x - ((LevelSliceAccessor)(Object)instance).getOriginBlockX();
-        @SuppressWarnings("DataFlowIssue")
-        int relBlockY = y - ((LevelSliceAccessor)(Object)instance).getOriginBlockY();
-        @SuppressWarnings("DataFlowIssue")
-        int relBlockZ = z - ((LevelSliceAccessor)(Object)instance).getOriginBlockZ();
-        var map = ((ClonedChunkSectionAccessor) this.renderContext.getSections()[LevelSliceAccessor.invokeGetLocalSectionIndex(relBlockX >> 4, relBlockY >> 4, relBlockZ >> 4)]).illusionist$getBlockStates();
-        if (map.containsKey(ShadowDisguiseMapComponent.encodePos(x, y, z))) {
-            state = map.get(ShadowDisguiseMapComponent.encodePos(x, y, z)).getDefaultState();
+        //noinspection ConstantValue
+        if ((Object) instance instanceof LevelSliceExt accessor) {
+            int localSectionIndex = accessor.getLocalSectionIndexO1(x, y, z);
+            var map = ((ClonedChunkSectionAccessor) this.renderContext.getSections()[localSectionIndex]).illusionist$getBlockStates();
+            int posIndex = encodePos(x, y, z);
+            if (map.containsKey(posIndex)) {
+                state = map.get(posIndex).getDefaultState();
+            }
         }
         return state;
     }

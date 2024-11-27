@@ -3,10 +3,12 @@
   "package": "stellarwitch7.illusionist.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "sodium.ChunkBuilderMeshingTaskMixin",
     "RenderedChunkMixin",
+    "sodium.ChunkBuilderMeshingTaskMixin",
     "sodium.ClonedChunkSectionMixin",
-    "sodium.LevelSliceAccessor"
+    "sodium.LevelSliceInvoker",
+    "sodium.BlockOcclusionCacheMixin",
+    "sodium.LevelSliceMixin"
   ],
   "plugin": "stellarwitch7.illusionist.mixin.client.IllusionistClientMixinConfigPlugin",
   "injectors": {
