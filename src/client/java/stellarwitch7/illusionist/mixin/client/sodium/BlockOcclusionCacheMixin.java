@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import stellarwitch7.illusionist.accessor.LevelSliceExt;
 
 import static stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent.encodePos;
+
 @Mixin(value = BlockOcclusionCache.class, remap = false)
 public class BlockOcclusionCacheMixin {
     @WrapOperation(method = "shouldDrawSide", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
@@ -19,10 +20,12 @@ public class BlockOcclusionCacheMixin {
             int sectionIndex = accessor.getLocalSectionIndexO1(blockPos);
             var map = accessor.illusionist$getShadowBlockStates(sectionIndex);
             var posIndex = encodePos(blockPos);
+
             if (map != null && map.containsKey(posIndex)) {
                 return map.get(posIndex).getDefaultState();
             }
         }
+
         return original.call(instance, blockPos);
     }
 }
