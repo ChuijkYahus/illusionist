@@ -14,7 +14,7 @@ import static stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent.encodePos
 
 @Mixin(value = BlockOcclusionCache.class, remap = false)
 public class BlockOcclusionCacheMixin {
-    @WrapOperation(method = "shouldDrawSide", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+    @WrapOperation(method = "shouldDrawSide", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", remap = true))
     private BlockState wrapGetBlockState(BlockView instance, BlockPos blockPos, Operation<BlockState> original) {
         if (instance instanceof LevelSliceExt accessor) {
             int sectionIndex = accessor.getLocalSectionIndexO1(blockPos);

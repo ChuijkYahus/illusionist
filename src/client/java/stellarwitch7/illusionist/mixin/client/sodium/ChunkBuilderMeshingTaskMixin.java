@@ -10,7 +10,6 @@ import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.caffeinemc.mods.sodium.client.world.cloned.ChunkRenderContext;
 import net.minecraft.block.BlockState;
 import org.joml.Vector3dc;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,8 +19,7 @@ import stellarwitch7.illusionist.accessor.LevelSliceExt;
 
 import static stellarwitch7.illusionist.cca.ShadowDisguiseMapComponent.encodePos;
 
-@Debug(export = true)
-@Mixin(ChunkBuilderMeshingTask.class)
+@Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<ChunkBuildOutput> {
     @Shadow(remap = false)
     @Final
