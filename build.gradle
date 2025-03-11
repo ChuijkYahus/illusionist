@@ -69,6 +69,7 @@ dependencies {
 
     modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
     modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property("deps.sodium")}")
+    modClientCompileOnly modLocalRuntime("maven.modrinth:iris:${property("deps.iris")}")
 }
 
 processResources {
