@@ -6,11 +6,16 @@ import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class AbstractBlockDisguiseTrick extends Trick {
+public abstract class AbstractBlockDisguiseTrick<T extends AbstractBlockDisguiseTrick<T>> extends Trick<T> {
     public AbstractBlockDisguiseTrick(Pattern pattern) {
         super(pattern);
+    }
+
+    public AbstractBlockDisguiseTrick(Pattern pattern, Signature<T> primary) {
+        super(pattern, primary);
     }
 
     protected static void updateShadow(SpellContext ctx, BlockPos blockPos) {
@@ -19,7 +24,6 @@ public abstract class AbstractBlockDisguiseTrick extends Trick {
         var particlePos = blockPos.toCenterPos();
         ctx.source().getWorld().spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
     }
 }

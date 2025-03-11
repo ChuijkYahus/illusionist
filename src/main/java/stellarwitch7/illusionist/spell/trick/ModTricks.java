@@ -11,7 +11,7 @@ public class ModTricks {
     public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
 
-    public static <T extends Trick> T register(String path, T trick) {
+    public static <T extends Trick<T>> T register(String path, T trick) {
         return Registry.register(Tricks.REGISTRY, Illusionist.id(path), trick);
     }
 
