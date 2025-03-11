@@ -29,7 +29,14 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
         super(render, time, absoluteCameraPos);
     }
 
-    @WrapOperation(method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"))
+    @WrapOperation(
+            method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;",
+                    remap = false
+            )
+    )
     private BlockState wrapGetBlockState(LevelSlice instance, int x, int y, int z, Operation<BlockState> original) {
         BlockState state = original.call(instance, x, y, z);
         //noinspection ConstantValue
