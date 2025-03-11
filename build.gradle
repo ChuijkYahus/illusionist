@@ -1,164 +1,177 @@
 plugins {
-	id 'fabric-loom' version '1.8-SNAPSHOT'
-	id 'maven-publish'
-	id "me.modmuss50.mod-publish-plugin" version "0.4.4"
-	id 'me.fallenbreath.yamlang' version '1.3.1'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
+    id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "0.4.4"
+    id 'me.fallenbreath.yamlang' version '1.3.1'
 }
 
 version = project.mod_version
 group = project.maven_group
-
 base {
-	archivesName = project.archives_base_name
+    archivesName = project.archives_base_name
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
 
-	maven {
-		url "https://maven.enjarai.dev/releases"
-	}
-	maven {
-		url "https://maven.enjarai.dev/mirrors"
-	}
+    maven {
+        url "https://maven.enjarai.dev/releases"
+    }
+    maven {
+        url "https://maven.enjarai.dev/mirrors"
+    }
 
-	maven {
-		name "Terraformers Maven"
-		url 'https://maven.terraformersmc.com'
-	}
+    maven {
+        //noinspection GroovyAssignabilityCheck
+        name "Terraformers Maven"
+        url 'https://maven.terraformersmc.com'
+    }
+    exclusiveContent {
+        forRepository {
+            //noinspection ForeignDelegate
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 loom {
-	splitEnvironmentSourceSets()
+    splitEnvironmentSourceSets()
 
-	mods {
-		"illusionist" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
+    mods {
+        "illusionist" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${property('deps.minecraft')}"
-	mappings "net.fabricmc:yarn:${property('deps.yarn')}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${property('deps.floader')}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${property('deps.fabric-api')}"
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${property('deps.minecraft')}"
+    mappings "net.fabricmc:yarn:${property('deps.yarn')}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${property('deps.floader')}"
 
-	modImplementation "dev.enjarai:trickster:${property('deps.trickster')}"
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${property('deps.fabric-api')}"
 
-	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
+    modImplementation "dev.enjarai:trickster:${property('deps.trickster')}"
+
+    modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
+    modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property("deps.sodium")}")
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+    it.options.release = 21
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
+    from("LICENSE") {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
 }
 
 yamlang {
-	targetSourceSets = [sourceSets.main]
-	inputDir = "assets/illusionist/lang"
+    targetSourceSets = [sourceSets.main]
+    inputDir = "assets/illusionist/lang"
 }
 
 // configure the maven publication
 publishing {
-	repositories {
-		maven {
-			name = "enjaraiMaven"
-			url = "https://maven.enjarai.dev/releases"
-			credentials(PasswordCredentials)
-			authentication {
-				basic(BasicAuthentication)
-			}
-		}
-	}
+    repositories {
+        maven {
+            name = "enjaraiMaven"
+            url = "https://maven.enjarai.dev/releases"
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
 
-	publications {
-		mavenJava(MavenPublication) {
-			groupId = group
-			artifactId = archivesBaseName
-			version = version
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = archivesBaseName
+            version = version
 
-			from components.java
-		}
-	}
+            from components.java
+        }
+    }
 }
 
 publishMods {
-	file = remapJar.archiveFile
-	displayName = "Illusionist ${property('mod_version')} for Trickster ${property('deps.trickster')}"
-	version = project.version
-	changelog = getRootProject().file("CHANGELOG.md").text
-	type = STABLE
-	modLoaders.add("fabric")
+    file = remapJar.archiveFile
+    displayName = "Illusionist ${property('mod_version')} for Trickster ${property('deps.trickster')}"
+    version = project.version
+    changelog = getRootProject().file("CHANGELOG.md").text
+    type = STABLE
+    modLoaders.add("fabric")
 
-	def min = property('publish_target_min')
-	def max = property('publish_target_max')
+    def min = property('publish_target_min')
+    def max = property('publish_target_max')
 
-	if (providers.gradleProperty('enjaraiModrinthToken').present) {
-		modrinth {
-			projectId = property('mod_modrinth')
-			accessToken = providers.gradleProperty('enjaraiModrinthToken').get()
+    if (providers.gradleProperty('enjaraiModrinthToken').present) {
+        modrinth {
+            projectId = property('mod_modrinth')
+            accessToken = providers.gradleProperty('enjaraiModrinthToken').get()
 
-			if (min == max) {
-				minecraftVersions.add(min)
-			} else {
-				minecraftVersionRange {
-					start = min
-					end = max
-				}
-			}
+            if (min == max) {
+                minecraftVersions.add(min)
+            } else {
+                minecraftVersionRange {
+                    start = min
+                    end = max
+                }
+            }
 
-			requires {
-				slug = "trickster"
-			}
-		}
-	}
+            requires {
+                slug = "trickster"
+            }
+        }
+    }
 
-	if (providers.gradleProperty('enjaraiGithubToken').present) {
-		github {
-			repository = property('mod_github')
-			accessToken = providers.gradleProperty('enjaraiGithubToken').get()
+    if (providers.gradleProperty('enjaraiGithubToken').present) {
+        github {
+            repository = property('mod_github')
+            accessToken = providers.gradleProperty('enjaraiGithubToken').get()
 
-			commitish = property('git_branch')
-			tagName = project.version
-		}
-	}
+            commitish = property('git_branch')
+            tagName = project.version
+        }
+    }
 }
 
 tasks.register('publishAll') {
-	group 'publishing'
-	dependsOn 'publish'
-	dependsOn 'publishMods'
+    group 'publishing'
+    dependsOn 'publish'
+    dependsOn 'publishMods'
 }

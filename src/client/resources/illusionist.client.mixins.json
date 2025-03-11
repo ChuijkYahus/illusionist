@@ -1,11 +1,17 @@
 {
-    "required": true,
-    "package": "stellarwitch7.illusionist.mixin.client",
-    "compatibilityLevel": "JAVA_21",
-    "client": [
-        "RenderedChunkMixin"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+  "required": true,
+  "package": "stellarwitch7.illusionist.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "RenderedChunkMixin",
+    "sodium.ChunkBuilderMeshingTaskMixin",
+    "sodium.ClonedChunkSectionMixin",
+    "sodium.LevelSliceInvoker",
+    "sodium.BlockOcclusionCacheMixin",
+    "sodium.LevelSliceMixin"
+  ],
+  "plugin": "stellarwitch7.illusionist.mixin.client.IllusionistClientMixinConfigPlugin",
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

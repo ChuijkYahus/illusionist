@@ -1,42 +1,24 @@
 package stellarwitch7.illusionist.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.enjarai.trickster.ModAttachments;
-import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.spell.ItemTriggerHelper;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LimbAnimator;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTracker;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.EmptyChunk;
-import net.minecraft.world.event.GameEvent;
-import stellarwitch7.illusionist.cca.ModChunkComponents;
-
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import stellarwitch7.illusionist.cca.ModChunkComponents;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
