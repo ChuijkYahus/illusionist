@@ -34,7 +34,7 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;",
-                    remap = false
+                    remap = true
             )
     )
     private BlockState wrapGetBlockState(LevelSlice instance, int x, int y, int z, Operation<BlockState> original) {
