@@ -1,1 +1,2 @@
-- Initial project creation, moving code from https://github.com/enjarai/trickster. (@StellarWitch7)
+- Added compatibility for Sodium. (@cputnam-a11y)
+- Updated to Trickster 2.0.0-beta.14. (@StellarWitch7)
