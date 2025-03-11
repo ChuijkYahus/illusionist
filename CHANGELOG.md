@@ -1,2 +1,1 @@
-- Added compatibility for Sodium. (@cputnam-a11y)
-- Updated to Trickster 2.0.0-beta.14. (@StellarWitch7)
+- Fixed mixin issues present only in production. (@cputnam-a11y)
