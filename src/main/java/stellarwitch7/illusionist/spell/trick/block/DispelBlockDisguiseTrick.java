@@ -5,21 +5,20 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.world.chunk.EmptyChunk;
 import stellarwitch7.illusionist.cca.ModChunkComponents;
 
-import java.util.List;
-
-public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick {
+public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick<DispelBlockDisguiseTrick> {
     public DispelBlockDisguiseTrick() {
-        super(Pattern.of(0, 4, 8, 5, 2, 4, 6, 3, 0, 1, 4, 7, 8));
+        super(Pattern.of(0, 4, 8, 5, 2, 4, 6, 3, 0, 1, 4, 7, 8),
+                Signature.of(FragmentType.VECTOR, DispelBlockDisguiseTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 
@@ -39,7 +38,6 @@ public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick {
                 return BooleanFragment.TRUE;
             }
         }
-
 
         return BooleanFragment.FALSE;
     }

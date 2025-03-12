@@ -1,1 +1,1 @@
-- Initial project creation, moving code from https://github.com/enjarai/trickster. (@StellarWitch7)
+- Fixed mixin issues present only in production. (@cputnam-a11y)

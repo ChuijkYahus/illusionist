@@ -8,30 +8,30 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.WorldChunk;
-import stellarwitch7.illusionist.cca.ModChunkComponents;
-
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import stellarwitch7.illusionist.cca.ModChunkComponents;
 
 @Mixin(WorldChunk.class)
 public abstract class WorldChunkMixin {
     @Shadow
-    final World world;
+    @Final
+    World world;
 
     public WorldChunkMixin(World world) {
-        this.world = world;
     }
 
     @Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/block/BlockState;", at = @At("HEAD"))
     private void dispelShadowBlock(BlockPos pos, BlockState newState, boolean moved, CallbackInfoReturnable<BlockState> cir) {
-        if (world.isClient) return;
+        if (world.isClient()) return;
 
         if (newState != world.getBlockState(pos)) {
             var serverWorld = world.getServer().getWorld(world.getRegistryKey());
-            var chunk = ((WorldChunk)(Object)this);
+            var chunk = ((WorldChunk) (Object) this);
             if (chunk instanceof EmptyChunk) return;
             var map = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk);
 

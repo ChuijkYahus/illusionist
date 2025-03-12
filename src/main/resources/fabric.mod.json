@@ -44,10 +44,10 @@
         "minecraft": ">=1.21",
         "java": ">=21",
         "fabric-api": "*",
-        "trickster": ">=2.0.0-beta.1"
+        "trickster": ">=2.0.0-beta.14"
     },
     "breaks": {
         "optifabric": "*",
-        "sodium": "*"
+        "sodium": ["<0.6.0+mc1.21.1", ">0.6.9+mc1.21.1"]
     }
 }
