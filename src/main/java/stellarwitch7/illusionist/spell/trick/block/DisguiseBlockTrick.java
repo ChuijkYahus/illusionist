@@ -1,6 +1,5 @@
 package stellarwitch7.illusionist.spell.trick.block;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
@@ -17,10 +16,10 @@ import stellarwitch7.illusionist.cca.ModChunkComponents;
 public class DisguiseBlockTrick extends AbstractBlockDisguiseTrick<DisguiseBlockTrick> {
     public DisguiseBlockTrick() {
         super(Pattern.of(0, 2, 8, 6, 3, 0, 1, 2, 5, 8, 7, 6, 0),
-                Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, DisguiseBlockTrick::run));
+                Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, DisguiseBlockTrick::run, FragmentType.BOOLEAN));
     }
 
-    public Fragment run(SpellContext ctx, VectorFragment pos, BlockTypeFragment blockType) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, VectorFragment pos, BlockTypeFragment blockType) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 
