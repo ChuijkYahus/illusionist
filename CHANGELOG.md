@@ -1,1 +1,1 @@
-- Fixed mixin issues present only in production. (@cputnam-a11y)
+- Update to Trickster 2.0.0-beta.34. (@AshAxolotl)
